@@ -4,4 +4,10 @@ Rails.application.routes.draw do
   root to: "home#index"
 
   devise_for :users
+
+  namespace :users do
+    post '/api/sign_in', to: 'api_sessions#create'
+    post '/api/refresh_token', to: 'api_sessions#refresh_token'
+    delete '/api/sign_out', to: 'api_sessions#delete'
+  end
 end
