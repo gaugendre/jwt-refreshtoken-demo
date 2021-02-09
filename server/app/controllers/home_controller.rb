@@ -2,29 +2,13 @@ class HomeController < ApplicationController
   before_action :authenticate_user!
 
   def index
-
-    sess_cookie_parts = cookies['_server_session'].split('--')
-
     @data = {
-      request: {
-        headers: request.headers.to_h
-      },
-      response: {
-        headers: response.headers
-      },
-      devise: {
-        mappings: Devise.mappings
-      },
-      session: {
-        session: session.to_h
-      },
-      cookies: {
-        cookies: cookies.to_h,
-        encrypted: cookies.encrypted['_server_session']
-      },
-      server: {
-        sess_cookie: sess_cookie_parts
-      },
+      cookie_names: cookies.to_h.keys,
+      session_cookie: cookies['_server_session'],
+      session: session.to_h,
+      remember_user_cookie: cookies['remember_user_token'],
+      signed_remember_user_cookie: cookies.signed['remember_user_token'],
+      remember_expires_at: current_user.remember_expires_at,
       user: current_user.attributes
     }
   end

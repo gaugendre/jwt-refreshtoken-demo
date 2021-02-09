@@ -5,7 +5,8 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
+         :timeoutable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
-  self.skip_session_storage = [:http_auth]
+  # self.skip_session_storage = [:http_auth]
 end

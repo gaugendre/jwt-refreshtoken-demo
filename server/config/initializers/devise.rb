@@ -319,7 +319,7 @@ Devise.setup do |config|
                         ]
 
     jwt.revocation_requests = [
-                            ['DELETE', %r{^/user/api/sign_out$}]
+                            ['DELETE', %r{^/users/api/sign_out$}]
                           ]
 
     jwt.request_formats = {

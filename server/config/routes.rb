@@ -5,9 +5,11 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  namespace :users do
-    post '/api/sign_in', to: 'api_sessions#create'
-    post '/api/refresh_token', to: 'api_sessions#refresh_token'
-    delete '/api/sign_out', to: 'api_sessions#delete'
+  devise_scope :user do
+    namespace :users do
+      post '/api/sign_in', to: 'api_sessions#create'
+      post '/api/refresh_token', to: 'api_sessions#refresh_token'
+      delete '/api/sign_out', to: 'api_sessions#destroy'
+    end
   end
 end
