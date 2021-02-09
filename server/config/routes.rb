@@ -12,4 +12,6 @@ Rails.application.routes.draw do
       delete '/api/sign_out', to: 'api_sessions#destroy'
     end
   end
+
+  post '/api', to: 'api#index'
 end

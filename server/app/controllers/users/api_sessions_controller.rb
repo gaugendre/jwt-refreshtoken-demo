@@ -9,7 +9,7 @@ class Users::ApiSessionsController < DeviseController
   # require params authentification
   prepend_before_action :allow_params_authentication!, only: :create
   # = disable cookie authentification
-  prepend_before_action(only: :create) { request.env.delete('HTTP_COOKIE') }
+  prepend_before_action(only: [:create, :destroy]) { request.env.delete('HTTP_COOKIE') }
 
   prepend_before_action :verify_signed_out_user, only: :destroy
 
@@ -92,6 +92,6 @@ class Users::ApiSessionsController < DeviseController
   # def stored_cookie_session
   #   sess_options = request.env[Rack::RACK_SESSION_OPTIONS]
   #   store = sess_options.instance_variable_get('@by')
-  #   cookies[store] if store.is_a?(ActionDispatch::Session::CookieStore)
+  #   cookies[store.key] if store.is_a?(ActionDispatch::Session::CookieStore)
   # end
 end
