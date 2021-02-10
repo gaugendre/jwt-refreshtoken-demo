@@ -1,4 +1,7 @@
 class ApiController < ActionController::API
+  # we only want jwt strategy to work, no sessions
+  prepend_before_action { request.env.delete('HTTP_COOKIE') }
+  
   before_action :authenticate_user!
 
   def index

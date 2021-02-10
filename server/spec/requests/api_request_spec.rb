@@ -27,5 +27,41 @@ RSpec.describe 'Api', type: :request do
       
       it { expect(json_content['user']).to be_present }
     end
+
+    context 'with session but no access_token' do
+      before do
+        # successful login
+        post users_api_sign_in_path, {
+          params: sign_in_payload.to_json,
+          headers: accept_header.merge(content_type_header)
+        }
+
+        @cookies = response.headers['Set-Cookie']
+
+        post api_path, { headers: accept_header.merge({ 'Cookie' => @cookies }) }
+      end
+
+      it_behaves_like 'unauthorized response'
+      it_behaves_like 'no auth headers'
+      it_behaves_like 'error description'
+    end
+
+    context 'with session and remember_me but no access_token' do
+      before do
+        # successful login
+        post users_api_sign_in_path, {
+          params: sign_in_payload_with_remember_me.to_json,
+          headers: accept_header.merge(content_type_header)
+        }
+
+        @cookies = response.headers['Set-Cookie']
+
+        post api_path, { headers: accept_header.merge({ 'Cookie' => @cookies }) }
+      end
+
+      it_behaves_like 'unauthorized response'
+      it_behaves_like 'no auth headers'
+      it_behaves_like 'error description'
+    end
   end
 end
