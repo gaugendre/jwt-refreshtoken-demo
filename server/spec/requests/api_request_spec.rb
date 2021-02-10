@@ -25,7 +25,7 @@ RSpec.describe 'Api', type: :request do
 
       it_behaves_like 'ok response'
       
-      expect(json_content['user']).to be_present
+      it { expect(json_content['user']).to be_present }
     end
   end
 end
