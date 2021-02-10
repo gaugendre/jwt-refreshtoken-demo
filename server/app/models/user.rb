@@ -7,6 +7,4 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :timeoutable,
          :jwt_authenticatable, jwt_revocation_strategy: self
-
-  # self.skip_session_storage = [:http_auth]
 end
