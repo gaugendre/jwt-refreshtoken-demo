@@ -35,6 +35,16 @@ RSpec.shared_context 'jwt on user request' do
     }
   end
 
+  let(:sign_in_payload_with_remember_me) do
+    {
+      "user": {
+        "email": email,
+        "password": password,
+        "remember_me": true
+      }
+    }
+  end
+
   let(:sign_in_payload_bad_email) do
     {
       "user": {

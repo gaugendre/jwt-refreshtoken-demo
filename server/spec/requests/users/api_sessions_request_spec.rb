@@ -7,12 +7,24 @@ def session_cookie_name(env)
   env[Rack::RACK_SESSION_OPTIONS].instance_variable_get('@by').key
 end
 
-RSpec.shared_examples 'httponly session cookie' do
+RSpec.shared_examples 'session httponly cookie' do
   it do
     expect(response.headers['Set-Cookie']).to match(
       %r{^#{session_cookie_name(request.env)}=(.+); path=/; HttpOnly$}
     )
   end
+end
+
+RSpec.shared_examples 'remember_me cookie' do
+  it do
+    expect(response.headers['Set-Cookie']).to match(
+      %r{^remember_user_token=(.+); path=/; expires=(.+); HttpOnly$}
+    )
+  end
+end
+
+RSpec.shared_examples 'no remember_me cookie' do
+  it { expect(response.headers['Set-Cookie']).not_to match /remember_user_token=/ }
 end
 
 RSpec.shared_examples 'jwt as access_token' do
@@ -65,7 +77,26 @@ RSpec.describe 'Users::ApiSessions', type: :request do
 
       it_behaves_like 'ok response'
 
-      it_behaves_like 'httponly session cookie'
+      it_behaves_like 'session httponly cookie'
+      it_behaves_like 'no remember_me cookie'
+      it_behaves_like 'expiration timestamp', :refresh_token_expiry
+
+      it_behaves_like 'jwt as access_token'
+      it_behaves_like 'expiration timestamp', :access_token_expiry
+    end
+
+    context 'with good credentials and remember_me' do
+      before do
+        post users_api_sign_in_path, {
+          params: sign_in_payload_with_remember_me.to_json,
+          headers: accept_header.merge(content_type_header)
+        }
+      end
+
+      it_behaves_like 'ok response'
+
+      it_behaves_like 'session httponly cookie'
+      it_behaves_like 'remember_me cookie'
       it_behaves_like 'expiration timestamp', :refresh_token_expiry
 
       it_behaves_like 'jwt as access_token'
