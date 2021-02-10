@@ -1,4 +1,4 @@
-RSpec.shared_context "jwt on user request" do
+RSpec.shared_context 'jwt on user request' do
   before do
     Devise.setup do |config|
       config.jwt do |jwt|
@@ -18,16 +18,38 @@ RSpec.shared_context "jwt on user request" do
     )
   end
 
-  let(:request_headers) do
-    { 'Accept' => 'application/json',
-      'Content-Type' => 'application/json' }
-  end
-
   let(:new_jwt) do
     Warden::JWTAuth::UserEncoder.new.call(user, :user, nil)
   end
 
   let(:access_token) do
     new_jwt[0]
+  end
+
+  let(:sign_in_payload) do
+    {
+      "user": {
+        "email": email,
+        "password": password
+      }
+    }
+  end
+
+  let(:sign_in_payload_bad_email) do
+    {
+      "user": {
+        "email": 'john@doe.invalid',
+        "password": password
+      }
+    }
+  end
+
+  let(:sign_in_payload_bad_password) do
+    {
+      "user": {
+        "email": email,
+        "password": 'bad password'
+      }
+    }
   end
 end
