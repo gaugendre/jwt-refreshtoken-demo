@@ -24,7 +24,7 @@ RSpec.shared_examples 'remember_me cookie' do
 end
 
 RSpec.shared_examples 'no remember_me cookie' do
-  it { expect(response.headers['Set-Cookie']).not_to match /remember_user_token=/ }
+  it { expect(response.headers['Set-Cookie']).not_to match(/remember_user_token=/) }
 end
 
 RSpec.shared_examples 'jwt as access_token' do
