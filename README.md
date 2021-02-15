@@ -18,7 +18,7 @@
   * `home_controller.rb` showing session data
 * `devise-jwt` custom implementation for api auth and tokens using httponly session cookie
   * [users/api_sessions_controller.rb](rails-backend/app/controllers/users/api_sessions_controller.rb)
-  * [users/api_sessions_request_spec.rb](rails-backend/app/controllers/users/api_sessions_controller.rb)
+  * [users/api_sessions_request_spec.rb](rails-backend/spec/requests/users/api_sessions_request_spec.rb)
 * dummy `POST /api` endpoint accessing session while ignoring cookies
   * [api_controller.rb](rails-backend/app/controllers/api_controller.rb)
   * [api_request_spec.rb](rails-backend/spec/requests/api_request_spec.rb)
@@ -69,6 +69,8 @@ end
 
 ### React webapp
 
+simple webapp refreshing tokens before expiration through the cookie but without any JWT decoding
+
 * based on the `fetch` function for api calls and `react-router-dom`
 * [utils/inMemoryToken.js](react-app/src/utils/inMemoryToken.js) pure JS to handle authentication state and trigger localStorage event on logout
 * [components/AuthContainer.jsx](react-app/src/components/AuthContainer.jsx) to
@@ -76,3 +78,4 @@ end
   * redirect to `/login` when unauthenticated
   * trigger regular access tokens refreshes before expiration
   * listen to logouts from localStorage
+* [components/HomePage.jsx](react-app/src/components/HomePage.jsx) to showcase a request with the access token
