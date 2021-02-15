@@ -1,22 +1,24 @@
-Rails.application.config.middleware.insert_before 0, Rack::Cors do
+Rails.application.config.middleware.insert_before 0, Rack::Cors, debug: true do
   allow do
     origins 'localhost:3001'
 
-    resource '/api',
-             headers: [:Authorization],
-             methods: [:post]
+    request_profile = {
+      headers: %w[Authorization], # must be strings
+      methods: [:post]
+    }
 
-    resource '/users/api/sign_in',
-             credentials: true,
-             headers: :any,
-             expose: [:Authorization],
-             methods: [:post]
+    auth_profile = {
+      credentials: true,
+      headers: :any,
+      expose: %w[Authorization], # must be strings
+      methods: [:post]
+    }
 
-    resource '/users/api/refresh_token',
-             credentials: true,
-             headers: :any,
-             expose: [:Authorization],
-             methods: [:post]
+    resource '/api', request_profile
+    resource '/api/*', request_profile
+
+    resource '/users/api/sign_in', auth_profile
+    resource '/users/api/refresh_token', auth_profile
 
     resource '/users/api/sign_out',
              credentials: true,
